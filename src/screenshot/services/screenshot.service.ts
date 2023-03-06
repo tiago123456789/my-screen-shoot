@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { UsersService } from 'src/users/users.service';
+import { UsersService } from '../../users/users.service';
 import { IScreenShooterAdapter } from '../adapters/screen-shooter/iscreenshooter.adapter';
 import { IStorageAdapter } from '../adapters/storage/istorage.adapter';
 import { ParamsTakeScreenShoot } from '../adapters/screen-shooter/params-take-screen-shoot';
@@ -10,11 +10,11 @@ import { OutputScreenshootPaginatedDto } from '../dtos/output-screenshoot-pagina
 import { Pagination } from '../../common/types/pagination';
 import { iProducerQueueAdapter } from '../adapters/queue/iproducer-queue.adapter';
 import { ScreenShotMessageQueue } from '../adapters/queue/screenshot-message-queue';
-import { QUEUES } from 'src/common/constants/App';
+import { QUEUES } from '../../common/constants/App';
 import { WebhookMessageQueue } from '../adapters/queue/webhook-message-queue';
 import { OutputMetricsUsageDto } from '../dtos/output-metrics-usage.dto';
-import { NotFoundException } from 'src/common/exceptions/not-found.exception';
-import { ILoggerAdapter } from 'src/common/adapters/logger/ilogger.adapter';
+import { NotFoundException } from '../../common/exceptions/not-found.exception';
+import { ILoggerAdapter } from '../../common/adapters/logger/ilogger.adapter';
 
 @Injectable()
 export class ScreenshotService {

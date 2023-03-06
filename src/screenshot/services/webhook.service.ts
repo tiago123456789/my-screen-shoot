@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { ILoggerAdapter } from 'src/common/adapters/logger/ilogger.adapter';
+import { ILoggerAdapter } from '../../common/adapters/logger/ilogger.adapter';
 import { IHttpAdapter } from '../adapters/http/ihttp.adapter';
 import { WebhookMessageQueue } from '../adapters/queue/webhook-message-queue';
 import { IScreenShotRepository } from '../repositories/iscreenshot.repository';

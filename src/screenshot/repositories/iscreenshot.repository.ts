@@ -3,7 +3,6 @@ import { ScreenShot } from '../screenshot.entity';
 export interface IScreenShotRepository {
   save(data: ScreenShot): Promise<ScreenShot>;
   update(data: ScreenShot): Promise<ScreenShot>;
-
   findAllScheduled(): Promise<ScreenShot[]>;
   findById(id: string): Promise<ScreenShot>;
   findAllByUserId(

@@ -8,8 +8,8 @@ import {
   UseGuards,
   Param,
 } from '@nestjs/common';
-import { ApikeyAuthGuard } from 'src/apikey/apikey-auth.guard';
-import { RequestWithUserId } from 'src/common/types/RequestWithUserId';
+import { ApikeyAuthGuard } from '../apikey/apikey-auth.guard';
+import { RequestWithUserId } from '../common/types/RequestWithUserId';
 import { OutputScreenshootPaginatedDto } from './dtos/output-screenshoot-paginated.dto';
 import { OutputScreenDto } from './dtos/output-screenshoot.dto';
 import { ParamsTakeScreenShootDto } from './dtos/params-take-screenshoot.dto';

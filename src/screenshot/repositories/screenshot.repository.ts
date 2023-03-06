@@ -1,6 +1,5 @@
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from 'src/users/user.entity';
-import { Repository, IsNull, Raw, Between } from 'typeorm';
+import { Repository, IsNull, Raw } from 'typeorm';
 import { ScreenShot } from '../screenshot.entity';
 import { IScreenShotRepository } from './iscreenshot.repository';
 

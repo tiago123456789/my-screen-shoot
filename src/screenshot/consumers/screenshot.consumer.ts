@@ -1,6 +1,6 @@
 import { Process, Processor } from '@nestjs/bull';
 import { Job } from 'bull';
-import { HEADERS, QUEUES } from 'src/common/constants/App';
+import { QUEUES } from '../../common/constants/App';
 import { ScreenShotMessageQueue } from '../adapters/queue/screenshot-message-queue';
 import { ScreenshotService } from '../services/screenshot.service';
 

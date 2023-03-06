@@ -3,7 +3,7 @@ import { MessageQueue } from './message-queue';
 import { Injectable } from '@nestjs/common';
 import { Queue } from 'bull';
 import { InjectQueue } from '@nestjs/bull';
-import { QUEUES } from 'src/common/constants/App';
+import { QUEUES } from '../../../common/constants/App';
 
 @Injectable()
 export class BullProducerQueueAdapter implements iProducerQueueAdapter {

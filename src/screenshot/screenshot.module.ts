@@ -2,9 +2,9 @@ import { BullModule } from '@nestjs/bull';
 import { Module } from '@nestjs/common';
 import { ScheduleModule } from '@nestjs/schedule';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ApikeyModule } from 'src/apikey/apikey.module';
-import { QUEUES } from 'src/common/constants/App';
-import { UsersModule } from 'src/users/users.module';
+import { ApikeyModule } from '../apikey/apikey.module';
+import { QUEUES } from '../common/constants/App';
+import { UsersModule } from '../users/users.module';
 import { BullProducerQueueAdapter } from './adapters/queue/bull-producer-queue.adapter';
 import { FileSystemAdapter } from './adapters/storage/file-system.adapter';
 import { PuppeteerScreenShooterAdapter } from './adapters/screen-shooter/puppeteer-screenshooter.adapter';
@@ -17,7 +17,7 @@ import { ScreenshotService } from './services/screenshot.service';
 import { WebhookConsumer } from './consumers/webhook.consumer';
 import { AxiosHttpAdapter } from './adapters/http/axios-http.adapter';
 import { WebhookService } from './services/webhook.service';
-import { CommonModule } from 'src/common/common.module';
+import { CommonModule } from '../common/common.module';
 
 @Module({
   imports: [

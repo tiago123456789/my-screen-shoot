@@ -3,10 +3,10 @@ import { CredentialAuthDto } from './dtos/credential-auth.dto';
 import { UsersDto } from './dtos/users.dto';
 import { IUsersRepository } from './repositories/iusers.repository';
 import { User } from './user.entity';
-import { SecurityException } from 'src/common/exceptions/security.exception';
+import { SecurityException } from '../common/exceptions/security.exception';
 import { IEncrypterAdapter } from './adapters/iencrypter.adapter';
 import { IJwtAdapter } from './adapters/ijwt.adapter';
-import { HEADERS } from 'src/common/constants/App';
+import { HEADERS } from '../common/constants/App';
 
 @Injectable()
 export class UsersService {

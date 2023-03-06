@@ -8,6 +8,10 @@ export class ScreenShotScheduler {
 
   @Cron('*/1 * * * *')
   handleCron() {
+    const isDisableScheduleTasks = process.env.DISABLE_SCHEDULE_TASKS == 'true';
+    if (isDisableScheduleTasks) {
+      return;
+    }
     this.screenshotService.publishScheduledScreenShoots();
   }
 }

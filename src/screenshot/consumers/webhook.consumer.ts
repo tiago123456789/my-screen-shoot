@@ -1,6 +1,6 @@
 import { Process, Processor } from '@nestjs/bull';
 import { Job } from 'bull';
-import { QUEUES } from 'src/common/constants/App';
+import { QUEUES } from '../../common/constants/App';
 import { WebhookMessageQueue } from '../adapters/queue/webhook-message-queue';
 import { WebhookService } from '../services/webhook.service';
 

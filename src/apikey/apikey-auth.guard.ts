@@ -1,7 +1,6 @@
 import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
-import { Request } from 'express';
-import { HEADERS } from 'src/common/constants/App';
-import { RequestWithUserId } from 'src/common/types/RequestWithUserId';
+import { HEADERS } from '../common/constants/App';
+import { RequestWithUserId } from '../common/types/RequestWithUserId';
 import { ApikeyService } from './apikey.service';
 
 @Injectable()

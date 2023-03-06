@@ -7,8 +7,8 @@ import {
   Req,
   UseGuards,
 } from '@nestjs/common';
-import { RequestWithUserId } from 'src/common/types/RequestWithUserId';
-import { UserAuthGuard } from 'src/users/user-auth.guard';
+import { RequestWithUserId } from '../common/types/RequestWithUserId';
+import { UserAuthGuard } from '../users/user-auth.guard';
 import { ApikeyService } from './apikey.service';
 import { ApiKeyOutput } from './dtos/apikey-output.dto';
 

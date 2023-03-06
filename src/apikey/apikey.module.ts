@@ -1,6 +1,6 @@
 import { CacheModule, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UsersModule } from 'src/users/users.module';
+import { UsersModule } from '../users/users.module';
 import { CacheManagerAdapter } from './adapters/cache-manager.adapter';
 import { ApikeyController } from './apikey.controller';
 import { ApiKey } from './apikey.entity';
