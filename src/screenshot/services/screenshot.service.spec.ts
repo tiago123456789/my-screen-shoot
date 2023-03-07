@@ -18,10 +18,24 @@ describe('ScreenShotService', () => {
   let userService: jest.Mocked<UsersService>;
   let screenShotService: ScreenshotService;
 
+  const fakeId = 'e69f04b6-7d1c-4a2a-bb23-2d7eaff3263d';
+  const fakeUserId = 'e69f04b6-7d1c-4a2a-bb23-2d7eaff3263dd';
+  const fakeParamsTakeScreenShot = {
+    id: fakeId,
+    params: {
+      format: 'png',
+      quality: 100,
+      isFullPage: false,
+      filename: './screenshoots_images/1677968031931github-full.png',
+      scheduledAt: '2023-03-04 16:45:00',
+      url: 'https://github.com/',
+    },
+  };
+
   beforeEach(() => {
     repository = {
       save: null,
-      update: null,
+      update: jest.fn(),
       findAllScheduled: jest.fn(),
       findById: jest.fn(),
       findAllByUserId: jest.fn(),
@@ -39,6 +53,14 @@ describe('ScreenShotService', () => {
       error: jest.fn(),
     };
 
+    screenShooter = {
+      takeScreenShot: jest.fn(),
+    };
+
+    storage = {
+      store: jest.fn(),
+    };
+
     screenShotService = new ScreenshotService(
       screenShooter,
       storage,
@@ -51,8 +73,6 @@ describe('ScreenShotService', () => {
 
   it('Should be throw exception when try get screen shoot by id, but not found', async () => {
     try {
-      const fakeId = 'e69f04b6-7d1c-4a2a-bb23-2d7eaff3263d';
-      const fakeUserId = 'e69f04b6-7d1c-4a2a-bb23-2d7eaff3263dd';
       repository.findById.mockResolvedValue(null);
       await screenShotService.findById(fakeId, fakeUserId);
     } catch (error) {
@@ -62,8 +82,6 @@ describe('ScreenShotService', () => {
 
   it('Should be throw exception when try get screen shoot by id, but try getting register not belong the user', async () => {
     try {
-      const fakeId = 'e69f04b6-7d1c-4a2a-bb23-2d7eaff3263d';
-      const fakeUserId = 'e69f04b6-7d1c-4a2a-bb23-2d7eaff3263dd';
       const screenShot = new ScreenShot();
       screenShot.setId(fakeId);
 
@@ -79,8 +97,6 @@ describe('ScreenShotService', () => {
   });
 
   it('Should be return screen shoots the user paginated', async () => {
-    const fakeId = 'e69f04b6-7d1c-4a2a-bb23-2d7eaff3263d';
-    const fakeUserId = 'e69f04b6-7d1c-4a2a-bb23-2d7eaff3263dd';
     const screenShot = new ScreenShot();
     screenShot.setId(fakeId);
 
@@ -102,8 +118,6 @@ describe('ScreenShotService', () => {
   });
 
   it('Should be return screen shoots the user paginated', async () => {
-    const fakeId = 'e69f04b6-7d1c-4a2a-bb23-2d7eaff3263d';
-    const fakeUserId = 'e69f04b6-7d1c-4a2a-bb23-2d7eaff3263dd';
     const screenShot = new ScreenShot();
     screenShot.setId(fakeId);
 
@@ -125,7 +139,6 @@ describe('ScreenShotService', () => {
   });
 
   it('Should be return last 10 screen shoots the user', async () => {
-    const fakeId = 'e69f04b6-7d1c-4a2a-bb23-2d7eaff3263d';
     const screenShot = new ScreenShot();
     screenShot.setId(fakeId);
 
@@ -158,7 +171,6 @@ describe('ScreenShotService', () => {
   });
 
   it("Should be try publish scheduled screen shoot to queue, but finish before publish in queue bucause don't have items", async () => {
-    const fakeId = 'e69f04b6-7d1c-4a2a-bb23-2d7eaff3263d';
     const screenShot = new ScreenShot();
     screenShot.setId(fakeId);
 
@@ -174,7 +186,6 @@ describe('ScreenShotService', () => {
   });
 
   it('Should be publish 10 scheduled screen shoot to queue', async () => {
-    const fakeId = 'e69f04b6-7d1c-4a2a-bb23-2d7eaff3263d';
     const screenShot = new ScreenShot();
     screenShot.setId(fakeId);
     screenShot.setParams(
@@ -198,38 +209,117 @@ describe('ScreenShotService', () => {
     expect(producerQueue.publishInBatch).toBeCalledTimes(1);
   });
 
-  //   it('Should be throw exception when try take screen shoot in background', async () => {
-  //     const fakeId = 'e69f04b6-7d1c-4a2a-bb23-2d7eaff3263d';
-  //     const screenShot = new ScreenShot();
-  //     screenShot.setId(fakeId);
-  //     screenShot.setParams(
-  //       JSON.stringify({
-  //         filename: './screenshoots_images/1677968031931github-full.png',
-  //         format: 'png',
-  //         isFullPage: true,
-  //         scheduledAt: '2023-03-04 16:45:00',
-  //         url: 'https://github.com/',
-  //         webhookUrl: 'https://webhook.site/cb49288f-2c21-4310-9921-ee1b98408057',
-  //       }),
-  //     );
+  it('Should be throw exception when try take screen shoot in background, but screen shoot not found', async () => {
+    try {
+      const screenShot = new ScreenShot();
+      screenShot.setId(fakeId);
+      screenShot.setParams(
+        JSON.stringify({
+          filename: './screenshoots_images/1677968031931github-full.png',
+          format: 'png',
+          isFullPage: true,
+          scheduledAt: '2023-03-04 16:45:00',
+          url: 'https://github.com/',
+        }),
+      );
 
-  //     const user = new User();
-  //     user.setId(fakeId);
-  //     screenShot.setUser(user);
+      const user = new User();
+      user.setId(fakeId);
+      screenShot.setUser(user);
 
-  //     const screenShoots: ScreenShot[] = Array(10).fill(screenShot);
-  //     repository.findAllScheduled.mockResolvedValue(screenShoots);
-  //     await screenShotService.takeScheduledScreenShoot({
-  //       id: fakeId,
-  //       params: {
-  //         quality: 100,
-  //         isFullPage: false,
-  //         filename: './screenshoots_images/1677968031931github-full.png',
-  //         scheduledAt: '2023-03-04 16:45:00',
-  //         url: 'https://github.com/',
-  //         webhookUrl: 'https://webhook.site/cb49288f-2c21-4310-9921-ee1b98408057',
-  //       },
-  //     });
-  //     expect(producerQueue.publishInBatch).toBeCalledTimes(1);
-  //   });
+      repository.findById.mockResolvedValue(null);
+      await screenShotService.takeScheduledScreenShoot(
+        // @ts-ignore
+        fakeParamsTakeScreenShot,
+      );
+    } catch (error) {
+      expect(error.message).toBe('ScreenShot not exist');
+    }
+  });
+
+  it("Should be don't try take screen shoot in background, because already has screen shoot", async () => {
+    const screenShot = new ScreenShot();
+    screenShot.setId(fakeId);
+    screenShot.setLink("'https://github.com/");
+    screenShot.setParams(
+      JSON.stringify({
+        filename: './screenshoots_images/1677968031931github-full.png',
+        format: 'png',
+        isFullPage: true,
+        scheduledAt: '2023-03-04 16:45:00',
+        url: 'https://github.com/',
+        webhookUrl: 'https://webhook.site/cb49288f-2c21-4310-9921-ee1b98408057',
+      }),
+    );
+
+    const user = new User();
+    user.setId(fakeId);
+    screenShot.setUser(user);
+
+    repository.findById.mockResolvedValue(screenShot);
+    // @ts-ignore
+    await screenShotService.takeScheduledScreenShoot(fakeParamsTakeScreenShot);
+
+    expect(repository.update).toHaveBeenCalledTimes(0);
+    expect(producerQueue.publish).toHaveBeenCalledTimes(0);
+  });
+
+  it("Should be try take screen shoot in background, but don't notify via webhook", async () => {
+    const screenShot = new ScreenShot();
+    screenShot.setId(fakeId);
+    screenShot.setParams(
+      JSON.stringify({
+        filename: './screenshoots_images/1677968031931github-full.png',
+        format: 'png',
+        isFullPage: true,
+        scheduledAt: '2023-03-04 16:45:00',
+        url: 'https://github.com/',
+      }),
+    );
+
+    const user = new User();
+    user.setId(fakeId);
+    screenShot.setUser(user);
+
+    repository.findById.mockResolvedValue(screenShot);
+    screenShooter.takeScreenShot.mockResolvedValue(Buffer.from('teste'));
+    storage.store.mockResolvedValue('http://localhost:3000/teste.png');
+    // @ts-ignore
+    await screenShotService.takeScheduledScreenShoot(fakeParamsTakeScreenShot);
+
+    expect(repository.update).toHaveBeenCalledTimes(1);
+    expect(producerQueue.publish).toHaveBeenCalledTimes(0);
+    expect(storage.store).toHaveBeenCalledTimes(1);
+    expect(screenShooter.takeScreenShot).toHaveBeenCalledTimes(1);
+  });
+
+  it('Should be try take screen shoot in background and send message to notify via webhook', async () => {
+    const screenShot = new ScreenShot();
+    screenShot.setId(fakeId);
+    screenShot.setWebhookUrl('http://example.com.br/1677968031931');
+    screenShot.setParams(
+      JSON.stringify({
+        filename: './screenshoots_images/1677968031931github-full.png',
+        format: 'png',
+        isFullPage: true,
+        scheduledAt: '2023-03-04 16:45:00',
+        url: 'https://github.com/',
+      }),
+    );
+
+    const user = new User();
+    user.setId(fakeId);
+    screenShot.setUser(user);
+
+    repository.findById.mockResolvedValue(screenShot);
+    screenShooter.takeScreenShot.mockResolvedValue(Buffer.from('teste'));
+    storage.store.mockResolvedValue('http://localhost:3000/teste.png');
+    // @ts-ignore
+    await screenShotService.takeScheduledScreenShoot(fakeParamsTakeScreenShot);
+
+    expect(repository.update).toHaveBeenCalledTimes(1);
+    expect(producerQueue.publish).toHaveBeenCalledTimes(1);
+    expect(storage.store).toHaveBeenCalledTimes(1);
+    expect(screenShooter.takeScreenShot).toHaveBeenCalledTimes(1);
+  });
 });
