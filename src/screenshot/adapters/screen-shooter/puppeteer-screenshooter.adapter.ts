@@ -1,6 +1,6 @@
 import puppeteer, { Browser } from 'puppeteer';
 import { IScreenShooterAdapter } from './iscreenshooter.adapter';
-import { ParamsTakeScreenShoot } from './params-take-screen-shoot';
+import { Format, ParamsTakeScreenShoot } from './params-take-screen-shoot';
 
 let browser: Browser;
 
@@ -20,6 +20,11 @@ export class PuppeteerScreenShooterAdapter implements IScreenShooterAdapter {
 
     await page.goto(url);
 
+    const optionsQuality: { [key: string]: any } = {};
+    if (params.format == Format.JPEG) {
+      optionsQuality.quality = params.quality;
+    }
+
     if (params.width && params.height) {
       params.width = Number(params.width);
       params.height = Number(params.height);
@@ -37,7 +42,7 @@ export class PuppeteerScreenShooterAdapter implements IScreenShooterAdapter {
       screenShootBinary = await element.screenshot({
         encoding: 'binary',
         type: params.format,
-        quality: params.quality,
+        ...optionsQuality,
       });
 
       page.close();
@@ -48,14 +53,14 @@ export class PuppeteerScreenShooterAdapter implements IScreenShooterAdapter {
       screenShootBinary = await page.screenshot({
         type: params.format,
         encoding: 'binary',
-        quality: params.quality,
+        ...optionsQuality,
         fullPage: true,
       });
     } else {
       screenShootBinary = await page.screenshot({
         type: params.format,
         encoding: 'binary',
-        quality: params.quality,
+        ...optionsQuality,
       });
     }
 
