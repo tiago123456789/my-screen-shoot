@@ -27,7 +27,7 @@ Instructions to running project:
 - Execute command **docker-compose up -d** to running all containers the application needs in background
 - Execute command **npm run start:dev** to running application in dev environment.
 - Execute commands **npm run build && npm run start:prod** to running application in production environment
-- Execute command **npm run build && npm run consumer:prod** to running consumer the queue. WARNING: in **.env** file set env **DISABLE_SCHEDULE_TASKS** equal **true** to prevent schedule task process something in consumers process and prevent consumer duplicate information.
+- Execute command **npm run build && npm run consumer:prod** to running consumer the queue. WARNING: in **.env** file set env **DISABLE_SCHEDULE_TASKS** equal **true** to prevent schedule task process something in consumers and prevent consumer process duplicate information.
 
 Architecture and Database:
 ===========================
